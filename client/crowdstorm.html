@@ -1,0 +1,71 @@
+<head>
+  <title>Crowdstorm</title>
+</head>
+
+<template name="layout">
+    <div class="container">
+    {{yield}}
+    </div>
+</template>
+
+<template name="home">
+    <div class="hero-unit">
+        <h1>Welcome to Crowdstorm!</h1>
+
+        <a href="/nullTask" class="btn btn-large btn-success pull-right">Get started!</a>
+    </div>
+</template>
+
+<template name="nullTask">
+    <h1>{{promptText}}</h1>
+
+    <h3>Come up with as many ideas as you can.</h3>
+    {{> ideaBox}}
+
+    <a class="btn btn-large btn-primary" href="/testTask">Continue...</a>
+</template>
+
+<template name="testTask">
+    <h1>{{promptText}}</h1>
+
+    <div class="row-fluid">
+        <div class="well span6">
+            <b>{{firstIdea}}</b>
+        </div>
+        {{#if twoIdeas}}
+        <div class="well span6">
+            <b>{{secondIdea}}</b>
+        </div>
+        {{/if}}
+    </div>
+
+    <h3>{{taskText}}</h3>
+
+    {{> ideaBox}}
+
+    <a class="btn btn-large btn-primary" href="/done">Continue...</a>
+</template>
+
+<template name="ideaBox">
+    <form class="form-inline">
+        <input class="input-xlarge" type="text" placeholder="Type an idea here...">
+        <button type="submit" class="btn">Add idea</button>
+    </form>
+
+    <table class="table table-striped">
+        <tbody>
+        {{#each currentIdeas}}
+        <tr>
+            <td>{{text}}</td>
+        </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</template>
+
+<template name="done">
+    <div class="hero-unit">
+        <h1>Thanks for your help!</h1>
+        <p>You can close this now.</p>
+    </div>
+</template>
