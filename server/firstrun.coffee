@@ -34,7 +34,25 @@ Meteor.startup ->
   return if Items.find().count() > 0
 
   Items.insert
-    text: "Provide more commuter rail access to Manhattan"
+    text: "Allow access to drinking water sampling stations to let people refill reusable bottles."
+    type: "transportation"
 
   Items.insert
-    text: "Facilitate greater access to rooftops for tenants' container gardening"
+    text: "Promote cycling by installing safe bike lanes"
+    type: "transportation"
+
+  Items.insert
+    text: "Improve schools in all districts so kids don't travel so far"
+    type: "education"
+
+  Items.insert
+    text: "Promote the use of solar energy using the latest technology on all high-rise buildings"
+    type: "energy"
+
+  Items.insert
+    text: "Replace sodium vapor street lights with LED or other energy-saving lights"
+    type: "technology"
+
+  Items.insert
+    text: "Preserve natural areas and woodlands as natural parks"
+    type: "environment"
