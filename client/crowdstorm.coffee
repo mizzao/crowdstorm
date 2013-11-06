@@ -25,22 +25,15 @@ Template.testTask.twoIdeas = ->
   Tasks.findOne(@taskId).inputs > 1 if @taskId?
 
 
-firstIndex = -1
-
 Template.testTask.firstIdea = ->
-  numIdeas = Items.find().count()
-  firstIndex = Math.floor(Math.random() * numIdeas)
-  console.log "first" + firstIndex
-  Items.find().fetch()[firstIndex]?.text
+  interaction = Interactions.findOne()
+  return unless interaction?
+  Items.findOne(interaction.ideaIds[0])?.text
 
 Template.testTask.secondIdea = ->
-  numIdeas = Items.find().count()
-  console.log numIdeas
-  secondIndex = Math.floor(Math.random() * numIdeas)
-  while (secondIndex is firstIndex)
-    secondIndex = Math.floor(Math.random() * numIdeas)
-  console.log "second" + secondIndex
-  Items.find().fetch()[secondIndex]?.text
+  interaction = Interactions.findOne()
+  return unless interaction?
+  Items.findOne(interaction.ideaIds[1])?.text
 
 Template.ideaBox.currentIdeas = ->
   Responses.find()
