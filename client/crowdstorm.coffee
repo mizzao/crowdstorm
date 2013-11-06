@@ -7,8 +7,8 @@ Router.map ->
   @route 'nullTask',
     before: -> Session.set("taskId", null)
   @route 'testTask',
-    before: -> Session.set("taskId", Interactions.findOne()?.taskId)
     data: -> Interactions.findOne()
+    before: -> Session.set("taskId", @getData()?.taskId)
   @route 'done'
 
 Deps.autorun ->
