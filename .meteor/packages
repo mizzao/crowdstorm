@@ -11,3 +11,5 @@ coffeescript
 stylus
 iron-router
 underscore
+accounts-testing
+bootboxjs

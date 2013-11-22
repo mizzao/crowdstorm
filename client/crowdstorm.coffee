@@ -1,3 +1,16 @@
+login = ->
+  return if Meteor.userId()
+  bootbox.prompt "Please enter a username", (username) ->
+    Meteor.insecureUserLogin(username) if username?
+
+# Start initial login after stuff loaded
+Meteor.startup ->
+  # login()
+  Meteor.setTimeout login, 500
+
+# Always request username if logged out
+Deps.autorun(login)
+
 Router.configure
   layoutTemplate: 'layout'
 
