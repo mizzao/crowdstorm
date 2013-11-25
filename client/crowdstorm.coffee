@@ -30,6 +30,7 @@ Template.ideaBox.events =
   "submit form": (e, tmpl) ->
     e.preventDefault()
     $el = $(tmpl.find("input"))
+    return if $el.val().trim() is ''
 
     Items.insert
       prompt: Prompts.findOne()._id
