@@ -11,15 +11,15 @@ Meteor.startup ->
     text: "Come up with something different from this idea"
     inputs: 1
   ,
-    text: "Come up with an idea that has <u>similar characteristics to these ideas</u>"
+    text: "Come up with ideas that have <u>similar characteristics to these ideas</u>"
     inputs: [ "sim" ]
     active: true
   ,
-    text: "Come up with an idea that <u>avoids characteristics of these ideas</u>"
+    text: "Come up with ideas that <u>avoids characteristics of these ideas</u>"
     inputs: [ "diff" ]
     active: true
   ,
-    text: "Come up with an idea that has <u>similar characteristics to the ideas on the left</u> and <u>avoids characteristics of ideas on the right</u>"
+    text: "Come up with ideas that have <u>similar characteristics to the ideas on the left</u> and <u>avoids characteristics of ideas on the right</u>"
     inputs: [ "sim", "diff" ]
     active: true
   ]

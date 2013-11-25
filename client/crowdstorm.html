@@ -1,7 +1,7 @@
 <template name="task1">
     <h1>{{promptText}}</h1>
 
-    <h3 class="text-info">Come up with as many ideas as you can.</h3>
+    <h3 class="text-info">Come up with a few ideas.</h3>
     {{> ideaBox}}
 
     <h3>Sit tight for further instructions once you're done.</h3>
@@ -17,7 +17,7 @@
         <div class="well span6">
             <ul>
             {{#each itemSet}}
-            <li><b>{{text}}</b></li>
+            <li><h4>{{text}}</h4></li>
             {{/each}}
             </ul>
         </div>

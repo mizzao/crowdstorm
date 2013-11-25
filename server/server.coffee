@@ -16,9 +16,12 @@ Meteor.publish null, ->
   interaction = Interactions.findOne({userId: @userId})
   unless interaction
     taskCursor = Tasks.find(active: true)
+
+    # XXX DIRTY HACKY CODE!
     interaction =
       userId: @userId
-      taskId: randomDoc(taskCursor)._id
+      taskId: taskCursor.fetch()[Meteor.users.find().count() % taskCursor.count()]._id
+
     Interactions.insert interaction
 
   prompt = Prompts.findOne(active: true)
