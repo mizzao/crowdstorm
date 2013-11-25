@@ -8,35 +8,32 @@ randomIdFromCollection = (collection) ->
   _.sample(collection.find().fetch())._id
 
 randomIdsFromCollection = (collection, n) ->
-  for item in _.sample(collection.find().fetch(), n)
-    item._id
+  item._id for item in _.sample(collection.find().fetch(), n)
 
 # Always subscribe to the current interaction
 Meteor.publish null, ->
-  sessionId = @_session.id
+  userId = @userId
 
   # Create interaction if none exists
-  interaction = Interactions.findOne(sessionId)
+  interaction = Interactions.findOne(user: userId)
   unless interaction
     interaction =
-      _id: sessionId
+      user: userId
       taskId: randomIdFromCollection(Tasks)
       # Always pick 2 ideas, even if we don't need both.
       ideaIds: randomIdsFromCollection(Items, 2)
     Interactions.insert interaction
 
   return [
-    Interactions.find(sessionId),
+    Interactions.find(userId),
     Items.find(_id: {$in: interaction.ideaIds})
   ]
 
-
 Meteor.publish "response", (taskId) ->
-  sessionId = @_session.id
+  userId = @userId
   Responses.find
-    interaction: sessionId
+    interaction: userId
     taskId: taskId
-
 
 Responses._ensureIndex
   interaction: 1

@@ -1,12 +1,10 @@
 # Put our 5 questions into the Tasks collection
 initCollection = (collection, items) ->
-  Meteor.startup ->
-    return if collection.find().count() > 0
-    for item in items
-      collection.insert item
-    return
+  return if collection.find().count() > 0
+  return collection.insert(item) for item in items
 
-initCollection Tasks, [
+Meteor.startup -> initCollection Tasks,
+  [
     text: "Come up with something similar to this idea"
     inputs: 1
   ,
@@ -23,26 +21,29 @@ initCollection Tasks, [
     inputs: 2
   ]
 
+Meteor.startup ->
+  [nycPrompt, csPrompt]= initCollection Prompts, [
+    text: "How do we create a greener and greater New York City?"
+  ,
+    text: "How can we improve computer science graduate student life at Harvard?"
+  ]
 
-initCollection Prompts, [{text: "How do we create a greener and greater New York City?"}]
-
-# Load a couple of ideas
-initCollection Items, [
+  initCollection Items, [
     text: "Allow access to drinking water sampling stations to let people refill reusable bottles."
-    type: "transportation"
+    prompt: nycPrompt
   ,
     text: "Promote cycling by installing safe bike lanes"
-    type: "transportation"
+    prompt: nycPrompt
   ,
     text: "Improve schools in all districts so kids don't travel so far"
-    type: "education"
+    prompt: nycPrompt
   ,
     text: "Promote the use of solar energy using the latest technology on all high-rise buildings"
-    type: "energy"
+    prompt: nycPrompt
   ,
     text: "Replace sodium vapor street lights with LED or other energy-saving lights"
-    type: "technology"
+    prompt: nycPrompt
   ,
     text: "Preserve natural areas and woodlands as natural parks"
-    type: "environment"
+    prompt: nycPrompt
   ]

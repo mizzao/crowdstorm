@@ -22,6 +22,7 @@ Router.map ->
   @route 'testTask',
     data: -> Interactions.findOne()
     before: -> Session.set("taskId", @getData()?.taskId)
+  @route 'diversity',
   @route 'done'
 
 Deps.autorun ->
