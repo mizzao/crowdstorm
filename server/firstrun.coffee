@@ -11,15 +11,15 @@ Meteor.startup ->
     text: "Come up with something different from this idea"
     inputs: 1
   ,
-    text: "Come up with an idea that <b>incorporates similar characteristics to these ideas</b>"
+    text: "Come up with an idea that has <u>similar characteristics to these ideas</u>"
     inputs: [ "sim" ]
     active: true
   ,
-    text: "Come up with an idea that <b>avoids characteristics of these ideas</b>"
+    text: "Come up with an idea that <u>avoids characteristics of these ideas</u>"
     inputs: [ "diff" ]
     active: true
   ,
-    text: "Come up with an idea that incorporates <b>similar characteristics to the ideas on the left</b> and <b>avoids characteristics of ideas on the right</b>"
+    text: "Come up with an idea that has <u>similar characteristics to the ideas on the left</u> and <u>avoids characteristics of ideas on the right</u>"
     inputs: [ "sim", "diff" ]
     active: true
   ]
@@ -54,19 +54,19 @@ Meteor.startup ->
     text: "Preserve natural areas and woodlands as natural parks"
     prompt: nycPrompt
   , # Harvard CS ideas
-    text: "organize regular informal research presentations/reading groups among small groups of students"
+    text: "Provide more comfortable ergonomic office chairs for students"
     prompt: csPrompt
     type: "sim"
   ,
-    text: "Harvard CS idea 2"
+    text: "Install a large aquarium in Maxwell Dworkin with many tropical fish"
     prompt: csPrompt
     type: "sim"
   ,
-    text: "Harvard CS idea 3"
+    text: "Hold a hush-hush event where grad students can share stories about their advisors"
     prompt: csPrompt
     type: "diff"
   ,
-    text: "Harvard CS idea 4"
+    text: "Create a mentoring program matching graduate students with more senior students or faculty"
     prompt: csPrompt
     type: "diff"
   ]

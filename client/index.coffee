@@ -33,7 +33,6 @@ Router.map ->
   @route 'diversity',
     before: ->
       checkLogin.call @
-      Meteor.subscribe("diversity")
   @route 'done'
 
 # The disconnect dialog
