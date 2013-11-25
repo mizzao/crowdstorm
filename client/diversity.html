@@ -1,6 +1,13 @@
-<template name="similarity">
+<template name="diversity">
     <h1>{{promptText}}</h1>
 
-    <h3>Point out the idea that is least like the others.</h3>
+    <h3 class="text-info">Select the idea that is least similar to (most unlike) the others.</h3>
 
+    <div class="row-fluid">
+        {{#each randomIdeas}}
+        <div class="well span4">
+            <b>{{text}}</b>
+        </div>
+        {{/each}}
+    </div>
 </template>

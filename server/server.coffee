@@ -1,39 +1,55 @@
 Meteor.publish null, ->
-  [
-    Prompts.find(),
-    Tasks.find(),
-  ]
+  Prompts.find(active: true)
 
-randomIdFromCollection = (collection) ->
-  _.sample(collection.find().fetch())._id
+# TODO these are inefficient. Implement our own reservoir sampling.
+randomDoc = (cursor) ->
+  _.sample cursor.fetch()
 
-randomIdsFromCollection = (collection, n) ->
-  item._id for item in _.sample(collection.find().fetch(), n)
+randomDocSet = (cursor, n) ->
+  _.sample cursor.fetch(), n
 
-# Always subscribe to the current interaction
+# Always subscribe to the current interaction (treatment)
 Meteor.publish null, ->
-  userId = @userId
+  return unless @userId
 
-  # Create interaction if none exists
-  interaction = Interactions.findOne(user: userId)
+  # Create interaction for this user if none exists
+  interaction = Interactions.findOne({userId: @userId})
   unless interaction
+    taskCursor = Tasks.find(active: true)
     interaction =
-      user: userId
-      taskId: randomIdFromCollection(Tasks)
-      # Always pick 2 ideas, even if we don't need both.
-      ideaIds: randomIdsFromCollection(Items, 2)
+      userId: @userId
+      taskId: randomDoc(taskCursor)._id
     Interactions.insert interaction
 
+  prompt = Prompts.findOne(active: true)
+  task = Tasks.findOne(interaction.taskId)
+
   return [
-    Interactions.find(userId),
-    Items.find(_id: {$in: interaction.ideaIds})
+    Interactions.find
+      userId: @userId
+  ,
+    Tasks.find interaction.taskId
+  ,
+    Items.find
+      prompt: prompt._id
+      type: { $in: task.inputs }
   ]
 
 Meteor.publish "response", (taskId) ->
   userId = @userId
-  Responses.find
-    interaction: userId
+  Items.find
+    # could put prompts here
+    userId: userId
     taskId: taskId
 
-Responses._ensureIndex
-  interaction: 1
+Interactions._ensureIndex
+  userId: 1
+
+Meteor.publish "diversity", ->
+  sub = this
+  prompt = Prompts.findOne(active: true)
+  # Generate random 3-tuples of ideas
+  ids = (doc._id for doc in randomDocSet(Items.find(prompt: prompt._id), 3))
+  Items.find(_id: {$in: ids}).forEach (doc) ->
+    sub.added("randomItems", doc._id, doc)
+  sub.ready()

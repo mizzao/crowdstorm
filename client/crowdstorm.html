@@ -1,49 +1,32 @@
-<head>
-  <title>Crowdstorm</title>
-</head>
-
-<template name="layout">
-    <div class="container">
-    {{yield}}
-    </div>
-</template>
-
-<template name="home">
-    <div class="hero-unit">
-        <h1>Welcome to Crowdstorm!</h1>
-
-        <a href="/nullTask" class="btn btn-large btn-success pull-right">Get started!</a>
-    </div>
-</template>
-
-<template name="nullTask">
+<template name="task1">
     <h1>{{promptText}}</h1>
 
-    <h3>Come up with as many ideas as you can.</h3>
+    <h3 class="text-info">Come up with as many ideas as you can.</h3>
     {{> ideaBox}}
 
-    <a class="btn btn-large btn-primary" href="/testTask">Continue...</a>
+    <h3>Sit tight for further instructions once you're done.</h3>
 </template>
 
-<template name="testTask">
+<template name="task2">
     <h1>{{promptText}}</h1>
+
+    <h3 class="text-info">{{taskText}}</h3>
 
     <div class="row-fluid">
+        {{#each inputTypes}}
         <div class="well span6">
-            <b>{{firstIdea}}</b>
+            <ul>
+            {{#each itemSet}}
+            <li><b>{{text}}</b></li>
+            {{/each}}
+            </ul>
         </div>
-        {{#if twoIdeas}}
-        <div class="well span6">
-            <b>{{secondIdea}}</b>
-        </div>
-        {{/if}}
+        {{/each}}
     </div>
-
-    <h3>{{taskText}}</h3>
 
     {{> ideaBox}}
 
-    <a class="btn btn-large btn-primary" href="/done">Continue...</a>
+    <h3>Sit tight for further instructions once you're done.</h3>
 </template>
 
 <template name="ideaBox">
@@ -53,10 +36,22 @@
     </form>
 
     <table class="table table-striped">
+        <thead>
+        <tr>
+            <th class="vertical-nopad"></th>
+            <th class="vertical-nopad" style="width: 50px"></th>
+        </tr>
+        </thead>
+
         <tbody>
         {{#each currentIdeas}}
         <tr>
             <td>{{text}}</td>
+            <td>
+                <button title="Delete" class="btn btn-mini btn-danger action-idea-delete">
+                <i class="icon-white icon-trash"></i>
+                </button>
+            </td>
         </tr>
         {{/each}}
         </tbody>

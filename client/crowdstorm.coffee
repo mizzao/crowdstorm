@@ -1,30 +1,3 @@
-login = ->
-  return if Meteor.userId()
-  bootbox.prompt "Please enter a username", (username) ->
-    Meteor.insecureUserLogin(username) if username?
-
-# Start initial login after stuff loaded
-Meteor.startup ->
-  # login()
-  Meteor.setTimeout login, 500
-
-# Always request username if logged out
-Deps.autorun(login)
-
-Router.configure
-  layoutTemplate: 'layout'
-
-Router.map ->
-  @route 'home',
-    path: '/'
-  @route 'nullTask',
-    before: -> Session.set("taskId", null)
-  @route 'testTask',
-    data: -> Interactions.findOne()
-    before: -> Session.set("taskId", @getData()?.taskId)
-  @route 'diversity',
-  @route 'done'
-
 Deps.autorun ->
   taskId = Session.get("taskId")
   Meteor.subscribe("response", taskId)
@@ -32,34 +5,37 @@ Deps.autorun ->
 Handlebars.registerHelper "promptText", ->
   Prompts.findOne()?.text
 
-Template.testTask.taskText = ->
+Template.task2.inputTypes = ->
+  Tasks.findOne(@taskId).inputs if @taskId?
+
+Template.task2.taskText = ->
   Tasks.findOne(@taskId).text if @taskId?
 
-Template.testTask.twoIdeas = ->
-  Tasks.findOne(@taskId).inputs > 1 if @taskId?
+Template.task2.itemSet = ->
+  prompt = Prompts.findOne()
 
-
-Template.testTask.firstIdea = ->
-  interaction = Interactions.findOne()
-  return unless interaction?
-  Items.findOne(interaction.ideaIds[0])?.text
-
-Template.testTask.secondIdea = ->
-  interaction = Interactions.findOne()
-  return unless interaction?
-  Items.findOne(interaction.ideaIds[1])?.text
+  Items.find
+    prompt: prompt._id
+    type: ''+@
 
 Template.ideaBox.currentIdeas = ->
-  Responses.find()
+  # Publications don't give other stuff
+  Items.find
+    userId: Interactions.findOne().userId
+    taskId: Session.get("taskId")
 
 Template.ideaBox.events =
+  "click .action-idea-delete": ->
+    Items.remove @_id
   "submit form": (e, tmpl) ->
     e.preventDefault()
     $el = $(tmpl.find("input"))
 
-    Responses.insert
-      "interaction": Interactions.findOne()._id
-      "taskId": Session.get("taskId")
-      "text": $el.val()
+    Items.insert
+      prompt: Prompts.findOne()._id
+      userId: Interactions.findOne().userId
+      taskId: Session.get("taskId")
+      text: $el.val()
 
     $el.val('')
+
